@@ -1,6 +1,16 @@
 import copy
 import pandas as pd
-import tabpfn
+from tabpfn.scripts import tabular_metrics, tabular_baselines
+from tabpfn.scripts.tabular_baselines import (
+    autogluon_metric,
+    autosklearn2_metric,
+    gp_metric,
+    knn_metric,
+    xgb_metric,
+    catboost_metric,
+    random_forest_metric,
+    logistic_metric,
+)
 import numpy as np
 from .data import get_X_y
 from .preprocessing import make_datasets_numeric, make_dataset_numeric
@@ -33,11 +43,11 @@ def evaluate_dataset(
     np.random.seed(0)
     if method == "autogluon" or method == "autosklearn2":
         if method == "autogluon":
-            from tabpfn.scripts.tabular_baselines import autogluon_metric
+            
 
             clf = autogluon_metric
         elif method == "autosklearn2":
-            from tabpfn.scripts.tabular_baselines import autosklearn2_metric
+            
 
             clf = autosklearn2_metric
         metric, ys, res = clf(
@@ -45,27 +55,27 @@ def evaluate_dataset(
         )  #
     elif type(method) == str:
         if method == "gp":
-            from tabpfn.scripts.tabular_baselines import gp_metric
+            
 
             clf = gp_metric
         elif method == "knn":
-            from tabpfn.scripts.tabular_baselines import knn_metric
+            
 
             clf = knn_metric
         elif method == "xgb":
-            from tabpfn.scripts.tabular_baselines import xgb_metric
+            
 
             clf = xgb_metric
         elif method == "catboost":
-            from tabpfn.scripts.tabular_baselines import catboost_metric
+            
 
             clf = catboost_metric
         elif method == "random_forest":
-            from tabpfn.scripts.tabular_baselines import random_forest_metric
+            
 
             clf = random_forest_metric
         elif method == "logistic":
-            from tabpfn.scripts.tabular_baselines import logistic_metric
+            
 
             clf = logistic_metric
         metric, ys, res = clf(
@@ -92,8 +102,8 @@ def evaluate_dataset(
             metric_used,
         )
 
-    acc = tabpfn.scripts.tabular_metrics.accuracy_metric(test_y, ys)
-    roc = tabpfn.scripts.tabular_metrics.auc_metric(test_y, ys)
+    acc = tabular_metrics.accuracy_metric(test_y, ys)
+    roc = tabular_metrics.auc_metric(test_y, ys)
 
     method_str = method if type(method) == str else "transformer"
     return {
